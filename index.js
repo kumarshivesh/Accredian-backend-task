@@ -8,8 +8,6 @@ dotenv.config();
 const app = express();
 const prisma = new PrismaClient();
 app.use(express.json());
-
-// Enable CORS
 app.use(cors());
 
 app.post('/api/referrals', async (req, res) => {
@@ -19,7 +17,6 @@ app.post('/api/referrals', async (req, res) => {
       data: { referrerName, referrerEmail, refereeName, refereeEmail },
     });
 
-    // Send referral email
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -44,6 +41,10 @@ app.post('/api/referrals', async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
 });
 
 const PORT = process.env.PORT || 5000;
